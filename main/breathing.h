@@ -1,10 +1,12 @@
 #ifndef BREATHING_H
 #define BREATHING_H
 
+#include "mode.h"
+
 #include <FastLED.h>
 
 
-class Breathing {
+class Breathing : public Mode {
 
 private:
   CHSV *colors;

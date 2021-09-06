@@ -1,11 +1,12 @@
 #ifndef SOLID_H
 #define SOLID_H
 
-#include <Arduino.h>
+#include "mode.h"
+
 #include <FastLED.h>
 
 
-class Solid {
+class Solid : public Mode {
 
 private:
   CRGB color;

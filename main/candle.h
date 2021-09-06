@@ -1,10 +1,12 @@
 #ifndef CANDLE_H
 #define CANDLE_H
 
+#include "mode.h"
+
 #include <FastLED.h>
 
 
-class CandleM {
+class CandleM : public Mode {
 
 private:
   const int minV = 100;

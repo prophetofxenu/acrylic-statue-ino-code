@@ -1,3 +1,4 @@
+#include "mode.h"
 #include "solid.h"
 #include "breathing.h"
 #include "candle.h"
@@ -13,24 +14,6 @@
 #define EEPROM_MODE 0
 
 CRGB leds[NUM_LEDS];
-
-#define NUM_MODES 6
-enum Mode {
-  SOLID_BLUE,
-  SOLID_YELLOW,
-  BREATHING_CYCLE,
-  CANDLE_ORANGE,
-  CANDLE_YELLOW,
-  CANDLE_GREEN
-};
-
-Mode mode = SOLID_BLUE;
-void nextMode() {
-  int m = (int) mode;
-  m = (m + 1) % NUM_MODES;
-  EEPROM.update(EEPROM_MODE, m);
-  mode = (Mode) m;
-}
 
 CHSV orange(28, 255, 255);
 CHSV blue(133, 255, 255);
@@ -70,17 +53,33 @@ CandleM candleGreen(
   NUM_LEDS
 );
 
+int currentMode;
+Mode *modes[] = {
+  &solidBlue,
+  &solidYellow,
+  &breathingCycle,
+  &candleOrange,
+  &candleYellow,
+  &candleGreen
+};
+void nextMode() {
+  currentMode = (currentMode + 1) % (sizeof(modes) / sizeof(Mode*));
+  EEPROM.update(EEPROM_MODE, currentMode);
+}
+
 
 void setup() {
+  Serial.begin(9600);
+  Serial.println("Start");
   // seed RNG
   randomSeed(analogRead(0));
   // init LEDs
   FastLED.addLeds<WS2812B, LED_PIN>(leds, NUM_LEDS);
   // read mode, init if necessary
-  mode = EEPROM.read(EEPROM_MODE);
-  if (mode >= NUM_MODES) {
+  currentMode = EEPROM.read(EEPROM_MODE);
+  if (currentMode >= sizeof(modes) / sizeof(Mode*)) {
     EEPROM.update(EEPROM_MODE, 0);
-    mode = 0;
+    currentMode = 0;
   }
   // setup buttons
   pinMode(PWR_BTN, INPUT);
@@ -88,7 +87,7 @@ void setup() {
   pinMode(MODE_BTN, INPUT);
   digitalWrite(MODE_BTN, HIGH);
 
-  Serial.begin(9600);
+  Serial.println("setup done");
 }
 
 
@@ -110,26 +109,10 @@ void loop() {
   }
 
   if (poweredOn) {
-    switch(mode) {
-      case SOLID_BLUE:
-        solidBlue.exec();
-        break;
-      case SOLID_YELLOW:
-        solidYellow.exec();
-        break;
-      case BREATHING_CYCLE:
-        breathingCycle.exec();
-        break;
-      case CANDLE_ORANGE:
-        candleOrange.exec();
-        break;
-      case CANDLE_YELLOW:
-        candleYellow.exec();
-        break;
-      case CANDLE_GREEN:
-        candleGreen.exec();
-        break;
-    }
+    Serial.print("mode: ");
+    Serial.println(currentMode);
+    modes[currentMode]->exec();
+    Serial.println("done executing");
   } else {
     FastLED.clear(true);
     FastLED.show();
