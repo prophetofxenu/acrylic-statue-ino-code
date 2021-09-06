@@ -23,6 +23,11 @@ CHSV blue(133, 255, 255);
 CHSV yellow(39, 255, 255);
 CHSV green(87, 255, 255);
 
+Solid solidOrange(
+  orange,
+  leds,
+  NUM_LEDS
+);
 Solid solidBlue(
   blue,
   leds,
@@ -33,10 +38,8 @@ Solid solidYellow(
   leds,
   NUM_LEDS
 );
-CHSV breathingCycleColors[] = { orange, yellow, green };
-Breathing breathingCycle(
-  breathingCycleColors,
-  sizeof(breathingCycleColors) / sizeof(CHSV),
+Solid solidGreen(
+  green,
   leds,
   NUM_LEDS
 );
@@ -45,17 +48,12 @@ CandleM candleOrange(
   leds,
   NUM_LEDS
 );
-Marquee marqueeOrange(
-  orange,
+CandleM candleBlue(
+  blue,
   leds,
   NUM_LEDS
 );
 CandleM candleYellow(
-  yellow,
-  leds,
-  NUM_LEDS
-);
-Marquee marqueeYellow(
   yellow,
   leds,
   NUM_LEDS
@@ -65,8 +63,30 @@ CandleM candleGreen(
   leds,
   NUM_LEDS
 );
+Marquee marqueeOrange(
+  orange,
+  leds,
+  NUM_LEDS
+);
+Marquee marqueeBlue(
+  blue,
+  leds,
+  NUM_LEDS
+);
+Marquee marqueeYellow(
+  yellow,
+  leds,
+  NUM_LEDS
+);
 Marquee marqueeGreen(
   green,
+  leds,
+  NUM_LEDS
+);
+CHSV breathingCycleColors[] = { orange, yellow, green };
+Breathing breathingCycle(
+  breathingCycleColors,
+  sizeof(breathingCycleColors) / sizeof(CHSV),
   leds,
   NUM_LEDS
 );
@@ -81,15 +101,19 @@ Rainbow rainbow(
 
 int currentMode;
 Mode *modes[] = {
+  &solidOrange,
   &solidBlue,
   &solidYellow,
-  &breathingCycle,
+  &solidGreen,
   &candleOrange,
-  &marqueeOrange,
+  &candleBlue,
   &candleYellow,
-  &marqueeYellow,
   &candleGreen,
+  &marqueeOrange,
+  &marqueeBlue,
+  &marqueeYellow,
   &marqueeGreen,
+  &breathingCycle,
   &spectrumCycle,
   &rainbow
 };
