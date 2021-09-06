@@ -4,6 +4,7 @@
 #include "candle.h"
 #include "spectrumcycle.h"
 #include "rainbow.h"
+#include "marquee.h"
 
 #include <FastLED.h>
 #include <EEPROM.h>
@@ -44,12 +45,27 @@ CandleM candleOrange(
   leds,
   NUM_LEDS
 );
+Marquee marqueeOrange(
+  orange,
+  leds,
+  NUM_LEDS
+);
 CandleM candleYellow(
   yellow,
   leds,
   NUM_LEDS
 );
+Marquee marqueeYellow(
+  yellow,
+  leds,
+  NUM_LEDS
+);
 CandleM candleGreen(
+  green,
+  leds,
+  NUM_LEDS
+);
+Marquee marqueeGreen(
   green,
   leds,
   NUM_LEDS
@@ -69,8 +85,11 @@ Mode *modes[] = {
   &solidYellow,
   &breathingCycle,
   &candleOrange,
+  &marqueeOrange,
   &candleYellow,
+  &marqueeYellow,
   &candleGreen,
+  &marqueeGreen,
   &spectrumCycle,
   &rainbow
 };
@@ -121,10 +140,7 @@ void loop() {
   }
 
   if (poweredOn) {
-    Serial.print("mode: ");
-    Serial.println(currentMode);
     modes[currentMode]->exec();
-    Serial.println("done executing");
   } else {
     FastLED.clear(true);
     FastLED.show();
