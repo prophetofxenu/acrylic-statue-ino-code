@@ -3,6 +3,7 @@
 #include "breathing.h"
 #include "candle.h"
 #include "spectrumcycle.h"
+#include "rainbow.h"
 
 #include <FastLED.h>
 #include <EEPROM.h>
@@ -57,6 +58,10 @@ SpectrumCycle spectrumCycle(
   leds,
   NUM_LEDS
 );
+Rainbow rainbow(
+  leds,
+  NUM_LEDS
+);
 
 int currentMode;
 Mode *modes[] = {
@@ -66,7 +71,8 @@ Mode *modes[] = {
   &candleOrange,
   &candleYellow,
   &candleGreen,
-  &spectrumCycle
+  &spectrumCycle,
+  &rainbow
 };
 void nextMode() {
   currentMode = (currentMode + 1) % (sizeof(modes) / sizeof(Mode*));
