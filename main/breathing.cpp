@@ -18,7 +18,6 @@ void Breathing::exec() {
     if (currentColorIdx >= numColors)
       currentColorIdx = 0;
   }
-  Serial.println(abs(cos8(theta)));
   currentColor.v = abs(cos8(theta++));
   for (int i = 0; i < numLeds; i++) {
     leds[i] = currentColor;

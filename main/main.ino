@@ -23,6 +23,8 @@ CHSV blue(133, 255, 255);
 CHSV yellow(39, 255, 255);
 CHSV green(87, 255, 255);
 
+#define MARQUEE_DELAY 150
+
 Solid solidOrange(
   orange,
   leds,
@@ -65,21 +67,25 @@ CandleM candleGreen(
 );
 Marquee marqueeOrange(
   orange,
+  MARQUEE_DELAY,
   leds,
   NUM_LEDS
 );
 Marquee marqueeBlue(
   blue,
+  MARQUEE_DELAY,
   leds,
   NUM_LEDS
 );
 Marquee marqueeYellow(
   yellow,
+  MARQUEE_DELAY,
   leds,
   NUM_LEDS
 );
 Marquee marqueeGreen(
   green,
+  MARQUEE_DELAY,
   leds,
   NUM_LEDS
 );
@@ -141,6 +147,10 @@ void setup() {
   digitalWrite(PWR_BTN, HIGH);
   pinMode(MODE_BTN, INPUT);
   digitalWrite(MODE_BTN, HIGH);
+
+  // clear LEDs just to be safe
+  FastLED.clear();
+  FastLED.show();
 
   Serial.println("setup done");
 }

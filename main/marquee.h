@@ -10,12 +10,15 @@ class Marquee : public Mode {
 
 private:
   CHSV color;
+  int _delay;
   CRGB *leds;
   int numLeds;
   int alternate;
 
 public:
-  Marquee(CHSV color, CRGB *leds, int numLeds);
+  Marquee(CHSV color, int delay, CRGB *leds, int numLeds);
+  Marquee(CHSV color, CRGB *leds, int numLeds) : 
+    Marquee(color, 75, leds, numLeds) {}
   void exec();
 
 };
